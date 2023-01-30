@@ -28,7 +28,7 @@ class TableController {
 
     getTable = async (req, res) => {
 
-        const tableIdOrName = "";
+        const tableIdOrName = process.env.TABLE_NAME_OR_ID;
         const archived = undefined;
         const includeForeignIds = undefined;
 
@@ -47,7 +47,7 @@ class TableController {
 
         const dynamicMetaTags = {};
         const HubDbTableV3Request = { name: "food", label: "Foods Table", useForPages: true, allowPublicApiAccess: false, allowChildTables: true, enableChildTablePages: false, columns: [{ "name": "text_column", "label": "Text Column", "id": "1", "type": "TEXT" }], dynamicMetaTags };
-        const tableIdOrName = "";
+        const tableIdOrName = process.env.TABLE_NAME_OR_ID;
         const archived = undefined;
         const includeForeignIds = undefined;
 
@@ -64,12 +64,27 @@ class TableController {
 
     delete = async (req, res) => {
 
-        const tableIdOrName = "";
+        const tableIdOrName = process.env.TABLE_NAME_OR_ID;
 
         try {
             const apiResponse = await hubspotClient.cms.hubdb.tablesApi.archiveTable(tableIdOrName);
             // console.log(JSON.stringify(apiResponse.body, null, 2));
             res.status(200).send(apiResponse);
+        } catch (e) {
+            e.message === 'HTTP request failed'
+                ? console.error(JSON.stringify(e.response, null, 2))
+                : console.error(e)
+        }
+    };
+
+    publish = async (req, res) => {
+
+        const tableIdOrName = process.env.TABLE_NAME_OR_ID;
+        const includeForeignIds = undefined;
+
+        try {
+            const apiResponse = await hubspotClient.cms.hubdb.tablesApi.publishDraftTable(tableIdOrName, includeForeignIds);
+            console.log(JSON.stringify(apiResponse.body, null, 2));
         } catch (e) {
             e.message === 'HTTP request failed'
                 ? console.error(JSON.stringify(e.response, null, 2))

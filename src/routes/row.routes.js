@@ -7,6 +7,7 @@ const router = exppress.Router();
 router.post('/create', (rowController.create));
 router.get('/get', (rowController.getRow));
 router.patch('/update', (rowController.update));
+router.patch('/batchupdate', (rowController.BatchUpdate));
 router.delete('/delete', (rowController.delete));
 
 
